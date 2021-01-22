@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TicdcEventFilter {
+
     // tableName_partition -> Max TS from Row Change Event
     private Map<String, Long> tableMaxTSMap = new HashMap<>();
     // partition -> Max ts from Resolve Event

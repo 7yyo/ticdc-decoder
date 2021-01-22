@@ -3,17 +3,16 @@ package ticdcJavaDemo.value;
 import ticdcJavaDemo.KafkaMessage;
 
 /**
- * There are three types of ticdc event.
+ * @TicdcEventBase.java 定义了三种 event 的父类，三种 event 分别是
  * @Row_Changed Event
  * @DDl Event
  * @Resolved Event
  *
- * This is base class for above event
- *
- * See detail https://docs.pingcap.com/zh/tidb/stable/ticdc-open-protocol
+ * 三种 event 的说明请参考 https://docs.pingcap.com/zh/tidb/stable/ticdc-open-protocol 的概述
  */
 public class TicdcEventBase {
 
+    // Ticdc event 的基本属性
     private TicdcEventType type;
     private int kafkaPartition;
     private long kafkaOffset;
@@ -27,6 +26,7 @@ public class TicdcEventBase {
         this.kafkaPartition = kafkaMessage.getPartition();
         this.kafkaOffset = kafkaMessage.getOffset();
         this.kafkaTimestamp = kafkaMessage.getTimestamp();
+
     }
 
     public TicdcEventType getType() {

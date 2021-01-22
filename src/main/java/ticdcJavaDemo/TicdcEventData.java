@@ -4,13 +4,13 @@ import ticdcJavaDemo.key.TicdcEventKey;
 import ticdcJavaDemo.value.TicdcEventBase;
 
 /**
- *
+ *  @TicdcEventData.java 定义了 event 的内容
  */
 public class TicdcEventData {
 
-    // Ticdc Event Key
+    // 解析后的 Ticdc Event Key
     private TicdcEventKey ticdcEventKey;
-    // Ticdc Event Value
+    // 解析后的 Ticdc Event Value
     private TicdcEventBase ticdcEventValue;
 
     public TicdcEventData() {

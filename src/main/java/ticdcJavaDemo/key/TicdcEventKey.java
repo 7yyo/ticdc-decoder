@@ -1,10 +1,14 @@
 package ticdcJavaDemo.key;
 
-/*
-    TicdcEventKey.java is the entity class of ticdc event key.
+/**
+ * @TicdcEventKey.java 是 event 的 key 的实体类
+ * 关于 event，请参考 https://docs.pingcap.com/zh/tidb/stable/ticdc-open-protocol 的概述部分
  */
 public class TicdcEventKey {
 
+    /**
+     * Ticdc event key 包含如下属性
+     */
     private long ts;
     private String scm; // Schema
     private String tbl; // Table

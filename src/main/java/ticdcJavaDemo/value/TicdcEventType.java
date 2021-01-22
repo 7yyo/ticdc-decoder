@@ -1,12 +1,10 @@
 package ticdcJavaDemo.value;
 
 /**
- * There are three types of ticdc event.
+ * @TicdcEventType.java 定义了 event 类型的枚举
  * @Row_Changed Event
  * @DDl Event
  * @Resolved Event
- *
- * See detail https://docs.pingcap.com/zh/tidb/stable/ticdc-open-protocol
  */
 public enum TicdcEventType {
 

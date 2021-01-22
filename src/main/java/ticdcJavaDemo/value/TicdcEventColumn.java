@@ -1,11 +1,14 @@
 package ticdcJavaDemo.value;
 
+/**
+ * @TicdcEventColumn.java 定义了 event 中 column 的相关信息
+ */
 public class TicdcEventColumn {
 
-    private int t;// Type, see https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#column-type-code
-    private boolean h; // Where Handle
-    private String name; // Column name
-    private Object v; // Value
+    private int t;// 列类型,例如 int float 等， 参考 https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#column-type-code
+    private boolean h; // 是否有 where 句柄
+    private String name; // 列名
+    private Object v; // 列值
 
     public String getName() {
         return name;

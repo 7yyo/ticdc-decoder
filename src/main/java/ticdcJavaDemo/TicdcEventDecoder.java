@@ -14,9 +14,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * @TicdcEventDecoder.java 解析流程
+ */
 public class TicdcEventDecoder implements Iterator<TicdcEventData> {
 
+    // update 后数据值的标示符
     private static final String UPDATE_NEW_VALUE_TOKEN = "u";
+    // update 前数据值的标示符
     private static final String UPDATE_OLD_VALUE_TOKEN = "p";
 
     private DataInputStream keyStream;
@@ -46,9 +51,12 @@ public class TicdcEventDecoder implements Iterator<TicdcEventData> {
     private void readKeyLength() {
         try {
             nextKeyLength = keyStream.readLong();
+            System.out.println("###############################");
+            System.out.println("下一个解析的 key length ，读取 8 个 bytes，返回 "+nextKeyLength);
+            System.out.println("###############################");
             hasNext = true;
         } catch (EOFException e) {
-            // if EOF, return hasNext = false
+            System.out.println("这是最后的 kv 对 ...");
             hasNext = false;
         } catch (Exception e) {
             throw new RuntimeException("Illegal format, can not read length", e);
@@ -71,6 +79,7 @@ public class TicdcEventDecoder implements Iterator<TicdcEventData> {
             // should be 1
             // https://docs.pingcap.com/zh/tidb/stable/ticdc-open-protocol - Message format definition
             version = keyStream.readLong();
+            System.out.println("协议版本号为" + version);
         } catch (IOException e) {
             throw new RuntimeException("Illegal format, can not read version", e);
         }
@@ -98,8 +107,10 @@ public class TicdcEventDecoder implements Iterator<TicdcEventData> {
     public TicdcEventBase createTidbEventValue(String json) {
         // resolve
         if (json == null || json.length() == 0) {
+            System.out.println("json 读取完成，创建 resolve event..");
             return new TicdcEventResolve(kafkaMessage);
         }
+        System.out.println("开始解析 json ...");
         JSONObject jsonObject = JSON.parseObject(json);
 
         // ddl
@@ -107,6 +118,7 @@ public class TicdcEventDecoder implements Iterator<TicdcEventData> {
             TicdcEventDDL ddl = new TicdcEventDDL(kafkaMessage);
             ddl.setQ(jsonObject.getString("q"));
             ddl.setT(jsonObject.getIntValue("t"));
+            System.out.println("因为开头是 q ，所以是 ddl event ...");
             return ddl;
         }
 
@@ -115,9 +127,11 @@ public class TicdcEventDecoder implements Iterator<TicdcEventData> {
         // type update
         if (jsonObject.containsKey(UPDATE_NEW_VALUE_TOKEN)) {
             updateOrDelete = UPDATE_NEW_VALUE_TOKEN;
+            System.out.println("因为开头是 u ，所以是 update 类型的 row change event ...");
         // type delete
         } else if (jsonObject.containsKey("d")) {
             updateOrDelete = "d";
+            System.out.println("因为开头是 d ，所以是 delete 类型的 row change event ...");
         } else {
             throw new RuntimeException("Can not parse Value:" + json);
         }
@@ -157,15 +171,20 @@ public class TicdcEventDecoder implements Iterator<TicdcEventData> {
     public TicdcEventData next() {
         try {
             byte[] key = new byte[(int) nextKeyLength];
+            System.out.println("通过 readFully(key) 读取 长度为 "+key.length+ " 的 key 的字节流");
             keyStream.readFully(key);
+//            System.out.println("nextKeyLength = " + nextKeyLength);
             readKeyLength();
             String keyData = new String(key, StandardCharsets.UTF_8);
+            System.out.println("将字节流转换为 UTF8 ，所以 key = " + keyData);
             TicdcEventKey ticdcEventKey = createTidbEventKey(keyData);
-
             byte[] val = new byte[(int) nextValueLength];
+//            System.out.println("nextValueLength = " + nextValueLength);
+            System.out.println("通过 readFully(key) 读取 长度为 "+key.length+ " 的 value 的字节流");
             valueStream.readFully(val);
             readValueLength();
             String valueData = new String(val, StandardCharsets.UTF_8);
+            System.out.println("将字节流转换为 UTF8，所以 value = " + valueData);
             return new TicdcEventData(ticdcEventKey, createTidbEventValue(valueData));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
@@ -173,6 +192,7 @@ public class TicdcEventDecoder implements Iterator<TicdcEventData> {
     }
 
     @Override
+    // 没用，只是为了实现接口
     public void remove() {
 
     }
