@@ -1,9 +1,8 @@
-package ticdcJavaDemo;
+package pojo;
 
 /**
- * @KafkaMessage.java 定义了 kafka 消息的实体类
- * byte[] 类型的 key 和 value 组成
- * 具体可见 https://docs.pingcap.com/zh/tidb/stable/ticdc-open-protocol message 格式的定义
+ * Kafka message
+ * see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#message-format
  */
 public class KafkaMessage {
 
@@ -16,7 +15,6 @@ public class KafkaMessage {
     public KafkaMessage() {
     }
 
-    // kafka 消息由 key 和 value 的 byte 数组组成
     public KafkaMessage(byte[] key, byte[] value) {
         this.key = key;
         this.value = value;

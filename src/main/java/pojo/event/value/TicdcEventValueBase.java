@@ -1,27 +1,24 @@
-package ticdcJavaDemo.value;
+package pojo.event.value;
 
-import ticdcJavaDemo.KafkaMessage;
+import pojo.KafkaMessage;
+import enums.TicdcEventValueType;
 
 /**
- * @TicdcEventBase.java 定义了三种 event 的父类，三种 event 分别是
- * @Row_Changed Event
- * @DDl Event
- * @Resolved Event
- *
- * 三种 event 的说明请参考 https://docs.pingcap.com/zh/tidb/stable/ticdc-open-protocol 的概述
+ * Base class of RowChange/DDL/Resolve event
  */
-public class TicdcEventBase {
+public class TicdcEventValueBase {
 
-    // Ticdc event 的基本属性
-    private TicdcEventType type;
+    // Ticdc event attributes. see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#restrictions
+    private TicdcEventValueType type;
+    // MQ partition
     private int kafkaPartition;
     private long kafkaOffset;
     private long kafkaTimestamp;
 
-    public TicdcEventBase() {
+    public TicdcEventValueBase() {
     }
 
-    public TicdcEventBase(TicdcEventType type, KafkaMessage kafkaMessage) {
+    public TicdcEventValueBase(TicdcEventValueType type, KafkaMessage kafkaMessage) {
         this.type = type;
         this.kafkaPartition = kafkaMessage.getPartition();
         this.kafkaOffset = kafkaMessage.getOffset();
@@ -29,11 +26,11 @@ public class TicdcEventBase {
 
     }
 
-    public TicdcEventType getType() {
+    public TicdcEventValueType getType() {
         return type;
     }
 
-    public void setType(TicdcEventType type) {
+    public void setType(TicdcEventValueType type) {
         this.type = type;
     }
 

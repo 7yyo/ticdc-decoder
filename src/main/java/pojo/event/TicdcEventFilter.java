@@ -1,4 +1,4 @@
-package ticdcJavaDemo;
+package pojo.event;
 
 import java.util.HashMap;
 import java.util.Map;

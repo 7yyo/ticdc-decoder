@@ -1,14 +1,19 @@
-package ticdcJavaDemo.value;
+package pojo.event.value.children.RowChange;
 
 /**
- * @TicdcEventColumn.java 定义了 event 中 column 的相关信息
+ * Column in TiCDC event
+ * see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#row-changed-event
  */
 public class TicdcEventColumn {
 
-    private int t;// 列类型,例如 int float 等， 参考 https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#column-type-code
-    private boolean h; // 是否有 where 句柄
-    private String name; // 列名
-    private Object v; // 列值
+    // column type
+    private int t;
+    // where handle flag
+    private boolean h;
+    // column name
+    private String name;
+    // column value
+    private Object v;
 
     public String getName() {
         return name;
