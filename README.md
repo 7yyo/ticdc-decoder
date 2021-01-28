@@ -1,33 +1,30 @@
-## TiCDC - Decoder in Java  [demo]
-  
-See detail [TiCDC Open Protocol](https://docs.pingcap.com/tidb/stable/ticdc-open-protocol )
+## TiCDC - Decoder in Java    [Demo]
 
-## How to use for now
-```java
-String jsonResult = DecodeUtil.ParseBinaryToJson(keyBytes, valueBytes)
+A Java decoder for [TiCDC Open Protocol](https://docs.pingcap.com/tidb/stable/ticdc-open-protocol)
+
+## How to build
+
+The alternative way to build a usable jar for testing will be
+```shell
+mvn clean install -Dmaven.test.skip=true
 ```
-```java
-ArrayList<TicdcEventData> dataList = DecodeUtil.ParseBinaryToEventData(keyBytes, valueBytes);
+The following command can install dependencies for you.
+```shell
+mvn package
 ```
+The jar can be found in `./target/`
+
+## Usage
+Demo is avaliable in [TestDecoder](https://github.com/7yyo/ticdc-decoder/blob/master/src/main/java/test/TestDecoder.java
 ## API
 ```java
 /**
- * Parse Byte[] to Json
+ * Parse Byte[] to Json. Note, param keys and values can not be null in same time.
  *
- * @param keys   kafka message key bytes
- * @param values kafka message value bytes
+ * @param keys   message key bytes, can be null.
+ * @param values message value bytes, can be null.
  * @return String
  */
- public static String ParseBinaryToJson(byte[] keys, byte[] values)
-```
-```java
-/**
- * Parse Byte[] to TicdcEventData list
- *
- * @param keys   kafka message key bytes
- * @param values kafka message value bytes
- * @return TiCDC event list
- */
- public static ArrayList<TicdcEventData> ParseBinaryToEventData(byte[] keys, byte[] values)
+ public static String DecodeJson(byte[] keys, byte[] values)
 ```
 
