@@ -1,22 +1,22 @@
 package pojo.event.value.children;
 
-import pojo.event.value.TicdcEventValueBase;
-import pojo.KafkaMessage;
-import enums.TicdcEventValueType;
+import pojo.Message;
+import enums.EventValueType;
+import pojo.event.value.EventValueBase;
 
 /**
  * The DDL event
  * see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#ddl-event
  */
-public class TicdcEventValueDDL extends TicdcEventValueBase {
+public class EventValueDDL extends EventValueBase {
 
     // DDL statement
     private String q;
     // DDL type. see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#ddl-type-code
     private int t;
 
-    public TicdcEventValueDDL(KafkaMessage kafkaMessage) {
-        super(TicdcEventValueType.ddl, kafkaMessage);
+    public EventValueDDL(Message message) {
+        super(EventValueType.ddl, message);
     }
 
     public String getQ() {

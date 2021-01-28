@@ -4,7 +4,7 @@ package pojo;
  * Kafka message
  * see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#message-format
  */
-public class KafkaMessage {
+public class Message {
 
     private byte[] key;
     private byte[] value;
@@ -12,10 +12,10 @@ public class KafkaMessage {
     private long offset;
     private long timestamp;
 
-    public KafkaMessage() {
+    public Message() {
     }
 
-    public KafkaMessage(byte[] key, byte[] value) {
+    public Message(byte[] key, byte[] value) {
         this.key = key;
         this.value = value;
     }

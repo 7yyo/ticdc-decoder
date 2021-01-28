@@ -2,7 +2,7 @@ package test;
 
 import org.junit.Assert;
 import org.junit.Test;
-import pojo.KafkaMessage;
+import pojo.Message;
 import util.DecodeUtil;
 
 import java.io.File;
@@ -24,12 +24,12 @@ public class TestDecoder {
      */
     @Test
     public void test() throws IOException {
-        List<KafkaMessage> kafkaMessagesFromTestData = getKafkaMessagesFromTestData();
-        for (KafkaMessage kafkaMessage : kafkaMessagesFromTestData) {
-            byte[] keyBytes = kafkaMessage.getKey();
-            byte[] valueBytes = kafkaMessage.getValue();
-            String result = DecodeUtil.ParseBinaryToJson(keyBytes, valueBytes);
-            System.out.println(result);
+        List<Message> messageList = getMessageFromTestData();
+        for (Message message : messageList) {
+            byte[] keyBytes = message.getKey();
+            byte[] valueBytes = message.getValue();
+            String json = DecodeUtil.DecodeJson(keyBytes, valueBytes);
+            System.out.println(json);
         }
     }
 
@@ -38,27 +38,22 @@ public class TestDecoder {
      *
      * @return kafka message list
      */
-    private List<KafkaMessage> getKafkaMessagesFromTestData() throws IOException {
-        List<KafkaMessage> kafkaMessages = new ArrayList<>();
-        File[] keyFiles = getClasspathFile("data/key").listFiles();
-        File[] valueFiles = getClasspathFile("data/value").listFiles();
-
-        Assert.assertNotNull(keyFiles);
-        Assert.assertNotNull(valueFiles);
-        Assert.assertEquals(keyFiles.length, valueFiles.length);
-
-        for (int i = 0; i < keyFiles.length; i++) {
-            File kf = keyFiles[i];
-            byte[] kafkaMessageKey = Files.readAllBytes(kf.toPath());
-            File vf = valueFiles[i];
-            byte[] kafkaMessageValue = Files.readAllBytes(vf.toPath());
-            KafkaMessage kafkaMessage = new KafkaMessage(kafkaMessageKey, kafkaMessageValue);
-            kafkaMessage.setPartition(1);
-            kafkaMessage.setOffset(1L);
-            kafkaMessage.setTimestamp(System.currentTimeMillis());
-            kafkaMessages.add(kafkaMessage);
+    private List<Message> getMessageFromTestData() throws IOException {
+        List<Message> messageList = new ArrayList<>();
+        File[] keyFileList = getClasspathFile("data/key").listFiles();
+        File[] valueFileList = getClasspathFile("data/value").listFiles();
+        Assert.assertNotNull(keyFileList);
+        Assert.assertNotNull(valueFileList);
+        Assert.assertEquals(keyFileList.length, valueFileList.length);
+        for (int i = 0; i < keyFileList.length; i++) {
+            File keyFile = keyFileList[i];
+            byte[] keyBytes = Files.readAllBytes(keyFile.toPath());
+            File valueFile = valueFileList[i];
+            byte[] valueBytes = Files.readAllBytes(valueFile.toPath());
+            Message message = new Message(keyBytes, valueBytes);
+            messageList.add(message);
         }
-        return kafkaMessages;
+        return messageList;
     }
 
     /**
