@@ -1,10 +1,10 @@
 package pojo.event.key;
 
 /**
- * The key of TiCDC event.
- * see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#event-format
+ * The key of ticdc event.
+ * see detail. https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#event-format
  */
-public class TicdcEventKey {
+public class EventKey {
 
     /**
      * RowChangeEvent: The timestamp of the transaction that causes the row change.
@@ -12,11 +12,8 @@ public class TicdcEventKey {
      * ResolvedEvent:  The Resolved timestamp. Any TS earlier than this Event has been sent.
      */
     private long ts;
-    // schema
     private String scm;
-    // table
     private String tbl;
-    // type
     private long t;
 
     public long getTs() {
@@ -53,13 +50,14 @@ public class TicdcEventKey {
 
     /**
      * Change ts to timestamp
+     *
      * @return timestamp
      */
-    public long getTimestamp() {
-        if (ts > 0) {
-            return ts >> 18;
-        }
-        return -1L;
-    }
+//    public long getTimestamp() {
+//        if (ts > 0) {
+//            return ts >> 18;
+//        }
+//        return -1L;
+//    }
 }
 

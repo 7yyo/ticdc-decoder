@@ -3,7 +3,7 @@ package pojo.event;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TicdcEventFilter {
+public class EventFilter {
 
     // tableName_partition -> Max TS from Row Change Event
     private Map<String, Long> tableMaxTSMap = new HashMap<>();
