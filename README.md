@@ -27,6 +27,9 @@ Ticdc decoder demo for kafka is avaliable in [Consumer.java](https://github.com/
 ## Parse result example
 
 ### Row change event
+```mysql
+update t1 set c1 = 2 where id = 1;
+```
 ```json
 {
  "eventKey":{
@@ -74,6 +77,9 @@ Ticdc decoder demo for kafka is avaliable in [Consumer.java](https://github.com/
 
 ```
 ### DDL event
+```mysql
+create table t1(id int primary key,c1 int,index(c1))
+```
 ```json
 {
 	"eventKey":{
