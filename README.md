@@ -25,6 +25,7 @@ Demo is avaliable in [TestDecoder.java](https://github.com/7yyo/ticdc-decoder/bl
 ```
 ## Parse result example
 
+### Row change event
 ```json
 {
 "eventKey":{
@@ -45,23 +46,32 @@ Demo is avaliable in [TestDecoder.java](https://github.com/7yyo/ticdc-decoder/bl
 	"type":"rowChange"
     }
 }
+```
+### DDL event
+```json
 {
-"eventKey":{
-	"scm":"a",
-	"t":1,
-	"tbl":"b",
-	"ts":3
-},
-"eventValue":{
-	"changeType":"u",
-	"columns":[{
-		"f":0,
-		"h":false,
-		"name":"col1",
-		"t":1,
-		"v":"にほんご"
-	}],
-	"type":"rowChange"
+	"eventKey":{
+		"scm":"test",
+		"t":2,
+		"tbl":"t2",
+		"ts":423216567160668163
+	},
+	"eventValue":{
+		"q":"alter table t2 add column c2 int",
+		"t":5,
+		"type":"ddl"
+	}
+}
+```
+### Resolved event
+```json
+{
+	"eventKey":{
+		"t":3,
+		"ts":423216567160668163
+	},
+	"eventValue":{
+		"type":"resolved"
 	}
 }
 ```
