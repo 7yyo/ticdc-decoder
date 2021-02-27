@@ -10,7 +10,8 @@ mvn package
 The file jar can be found in `./target/`
 
 ## Usage
-Demo is avaliable in [TestDecoder.java](https://github.com/7yyo/ticdc-decoder/blob/master/src/main/java/test/TestDecoder.java)
+Ticdc decoder demo is avaliable in [TestDecoder.java](https://github.com/7yyo/ticdc-decoder/blob/master/src/main/java/test/TestDecoder.java)
+Ticdc decoder demo for kafka is avaliable in [Consumer.java](https://github.com/7yyo/ticdc-decoder/blob/master/src/main/java/test/kafka/Consumer.java)
 ## API
 ```java
 /**
