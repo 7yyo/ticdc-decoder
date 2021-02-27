@@ -24,7 +24,7 @@ Ticdc decoder demo for kafka is avaliable in [Consumer.java](https://github.com/
  */
  public static String DecodeJson(byte[] keys, byte[] values)
 ```
-## Parse result example
+## Example
 
 ### Row change event
 ```mysql
