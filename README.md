@@ -10,7 +10,7 @@ mvn package
 The file jar can be found in `./target/`
 
 ## Usage
-Ticdc decoder demo is avaliable in [TestDecoder.java](https://github.com/7yyo/ticdc-decoder/blob/master/src/main/java/test/TestDecoder.java)
+Ticdc decoder demo is avaliable in [TestDecoder.java](https://github.com/7yyo/ticdc-decoder/blob/master/src/main/java/test/TestDecoder.java)  
 Ticdc decoder demo for kafka is avaliable in [Consumer.java](https://github.com/7yyo/ticdc-decoder/blob/master/src/main/java/test/kafka/Consumer.java)
 ## API
 ```java
@@ -29,24 +29,49 @@ Ticdc decoder demo for kafka is avaliable in [Consumer.java](https://github.com/
 ### Row change event
 ```json
 {
-"eventKey":{
-	"scm":"a",
-	"t":1,
-	"tbl":"b",
-	"ts":2
-},
+ "eventKey":{
+	     "scm":"test",
+	     "t":1,
+	     "tbl":"t1",
+	     "ts":423217537329659906
+	    },
 "eventValue":{
-	"changeType":"u",
-	"columns":[{
-		"f":0,
-		"h":false,
-		"name":"col1",
-		"t":1,
-		"v":"💋💼🕶💼👛💄💋💇"
-	}],
-	"type":"rowChange"
-    }
+	     "changeType":"u",
+	     "columns":[{
+			"f":0,
+			"h":true,
+			"name":"id",
+			"t":3,
+			"v":1
+			},
+			{
+			"f":0,
+			"h":false,
+			"name":"c1",
+			"t":3,
+			"v":2
+			}
+		],
+		"oldColumns":[
+			{
+			"f":0,
+			"h":true,
+			"name":"id",
+			"t":3,
+			"v":1
+			},
+			{
+			"f":0,
+			"h":false,
+			"name":"c1",
+			"t":3,
+			"v":1
+			}
+		],
+		"type":"rowChange"
+	}
 }
+
 ```
 ### DDL event
 ```json
@@ -54,12 +79,12 @@ Ticdc decoder demo for kafka is avaliable in [Consumer.java](https://github.com/
 	"eventKey":{
 		"scm":"test",
 		"t":2,
-		"tbl":"t2",
-		"ts":423216567160668163
+		"tbl":"t1",
+		"ts":423217447859912710
 	},
 	"eventValue":{
-		"q":"alter table t2 add column c2 int",
-		"t":5,
+		"q":"create table t1(id int primary key,c1 int,index(c1))",
+		"t":3,
 		"type":"ddl"
 	}
 }
