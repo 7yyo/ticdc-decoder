@@ -72,7 +72,7 @@ public class EventDecoder implements Iterator<EventData> {
                 String keyData = new String(keys, StandardCharsets.UTF_8);
                 eventKey = createEventKey(keyData);
             }
-            String valueData = "";
+            String valueData;
             if (valueStream != null) {
                 long valueLength = nextValueLength;
                 byte[] values = new byte[(int) valueLength];
@@ -219,7 +219,6 @@ public class EventDecoder implements Iterator<EventData> {
                 EventColumn c = new EventColumn();
                 c.setT(cObj.getIntValue("t"));
                 c.setH(cObj.getBooleanValue("h"));
-//                c.setF(cObj.getIntValue("f"));
                 c.setV(cObj.get("v"));
                 c.setName(col);
                 cs.add(c);

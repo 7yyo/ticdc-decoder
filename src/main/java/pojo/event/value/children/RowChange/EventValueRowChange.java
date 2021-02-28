@@ -8,15 +8,13 @@ import java.util.List;
 
 /**
  * The row change event
- * see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#resolved-event
+ * See detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#resolved-event
  */
 public class EventValueRowChange extends EventValueBase {
 
-    // Event type. Update or delete
+    // Event type, Update or delete
     private String changeType;
-    // The data before modification is recorded here.
     private List<EventColumn> oldColumns;
-    // The modified data is recorded here.
     private List<EventColumn> columns;
 
     public EventValueRowChange(Message message) {

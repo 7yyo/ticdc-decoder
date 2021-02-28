@@ -4,14 +4,11 @@ import pojo.event.key.EventKey;
 import pojo.event.value.EventValueBase;
 
 /**
- * The TiCDC event structure
- * Should be key & value
+ * The ticdc event structure
  */
 public class EventData {
 
-    // Event key
     private EventKey eventKey;
-    // Event value
     private EventValueBase eventValue;
 
     public EventData(EventKey eventKey, EventValueBase ticdcEventValue) {

@@ -2,18 +2,14 @@ package pojo.event.value.children.RowChange;
 
 /**
  * Column in ticdc event
- * See detail. https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#row-changed-event
+ * See detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#row-changed-event
  */
 public class EventColumn {
 
     private String name;
-    // column type. see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#column-type-code
     private int t;
-    // where handle
-    private boolean h;
-    // flag. see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#bit-flags-of-columns
     private int f;
-    // column value
+    private boolean h;
     private Object v;
 
     public String getName() {

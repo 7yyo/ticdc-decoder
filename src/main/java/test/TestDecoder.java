@@ -15,7 +15,6 @@ import java.util.List;
 public class TestDecoder {
 
     /**
-     * Just fot test
      * Use binary file to verify the correctness of binary conversion json.
      * You can select the test file from the path resources/data and put it in resouces/data/key or value.
      * Note. Please select the key/value test file with the same file name suffix. And put a pair of files each time

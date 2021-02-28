@@ -6,13 +6,11 @@ import pojo.event.value.EventValueBase;
 
 /**
  * The DDL event
- * see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#ddl-event
+ * See detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#ddl-event
  */
 public class EventValueDDL extends EventValueBase {
 
-    // DDL statement
     private String q;
-    // DDL type. see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#ddl-type-code
     private int t;
 
     public EventValueDDL(Message message) {
