@@ -177,30 +177,26 @@ public class EventDecoder implements Iterator<EventData> {
         }
         // Row change event type : update or delete
         String rowChangeType;
-        /*
-          Row change event has two type: update/delete.
-         */
+        JSONObject row = null;
+        EventValueRowChange eventValueRowChange = new EventValueRowChange(message);
         if (jsonObject.containsKey(COLUMN)) {
             rowChangeType = COLUMN;
+            row = jsonObject.getJSONObject(OLD_COLUMN);
+            if (row != null) {
+                eventValueRowChange.setO_col(getEventColumns(row));
+            }
         } else if (jsonObject.containsKey(DELETE)) {
             rowChangeType = DELETE;
         } else {
             throw new RuntimeException("The value message is not 'update' or 'delete', json = [" + json + "]");
         }
-        JSONObject row = jsonObject.getJSONObject(rowChangeType);
-        EventValueRowChange ticdcEventValueRowChange = new EventValueRowChange(message);
-        ticdcEventValueRowChange.setRcType(rowChangeType);
-        if (ticdcEventValueRowChange.getType() == EventValueType.ROW_CHANGE) {
+        row = jsonObject.getJSONObject(rowChangeType);
+        eventValueRowChange.setRcType(rowChangeType);
+        if (eventValueRowChange.getType() == EventValueType.ROW_CHANGE) {
             List<EventColumn> columns = getEventColumns(row);
-            ticdcEventValueRowChange.setCol(columns);
+            eventValueRowChange.setCol(columns);
         }
-        if (COLUMN.equals(rowChangeType)) {
-            row = jsonObject.getJSONObject(OLD_COLUMN);
-            if (row != null) {
-                ticdcEventValueRowChange.setO_col(getEventColumns(row));
-            }
-        }
-        return ticdcEventValueRowChange;
+        return eventValueRowChange;
     }
 
     private List<EventColumn> getEventColumns(JSONObject row) {
