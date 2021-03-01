@@ -7,7 +7,7 @@ import pojo.Message;
 import pojo.event.key.EventKey;
 import pojo.event.value.EventValueBase;
 import pojo.event.value.children.EventValueDDL;
-import pojo.event.value.children.EventValueResolve;
+import pojo.event.value.children.EventValueResolved;
 import pojo.event.value.children.RowChange.EventColumn;
 import pojo.event.value.children.RowChange.EventValueRowChange;
 
@@ -27,8 +27,9 @@ public class EventDecoder implements Iterator<EventData> {
 
     private static final String DDL = "q";
     private static final String DELETE = "d";
-    private static final String UPDATE_NEW_VALUE = "u";
-    private static final String UPDATE_OLD_VALUE = "p";
+    private static final String COLUMN = "u";
+    private static final String OLD_COLUMN = "p";
+
     private DataInputStream keyStream;
     private DataInputStream valueStream;
     private final Message message;
@@ -164,7 +165,7 @@ public class EventDecoder implements Iterator<EventData> {
      */
     public EventValueBase createEventValue(String json) {
         if (json == null || json.length() == 0) {
-            return new EventValueResolve(message);
+            return new EventValueResolved(message);
         }
         JSONObject jsonObject = JSON.parseObject(json);
         // DDL event
@@ -179,52 +180,43 @@ public class EventDecoder implements Iterator<EventData> {
         /*
           Row change event has two type: update/delete.
          */
-        if (jsonObject.containsKey(UPDATE_NEW_VALUE)) {
-            rowChangeType = UPDATE_NEW_VALUE;
+        if (jsonObject.containsKey(COLUMN)) {
+            rowChangeType = COLUMN;
         } else if (jsonObject.containsKey(DELETE)) {
             rowChangeType = DELETE;
         } else {
             throw new RuntimeException("The value message is not 'update' or 'delete', json = [" + json + "]");
         }
-        // Get row, should be update or delete.
         JSONObject row = jsonObject.getJSONObject(rowChangeType);
         EventValueRowChange ticdcEventValueRowChange = new EventValueRowChange(message);
-        ticdcEventValueRowChange.setChangeType(rowChangeType);
-        if (ticdcEventValueRowChange.getType() == EventValueType.rowChange) {
+        ticdcEventValueRowChange.setRcType(rowChangeType);
+        if (ticdcEventValueRowChange.getType() == EventValueType.ROW_CHANGE) {
             List<EventColumn> columns = getEventColumns(row);
-            ticdcEventValueRowChange.setColumns(columns);
+            ticdcEventValueRowChange.setCol(columns);
         }
-        // If has 'p', record.
-        if (UPDATE_NEW_VALUE.equals(rowChangeType)) {
-            row = jsonObject.getJSONObject(UPDATE_OLD_VALUE);
+        if (COLUMN.equals(rowChangeType)) {
+            row = jsonObject.getJSONObject(OLD_COLUMN);
             if (row != null) {
-                ticdcEventValueRowChange.setOldColumns(getEventColumns(row));
+                ticdcEventValueRowChange.setO_col(getEventColumns(row));
             }
         }
         return ticdcEventValueRowChange;
     }
 
-    /**
-     * Get event columns
-     * see detail. https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#row-changed-event
-     *
-     * @param row Event row
-     * @return Event column list
-     */
     private List<EventColumn> getEventColumns(JSONObject row) {
-        List<EventColumn> cs = new ArrayList<>();
+        List<EventColumn> eventColumnList = new ArrayList<>();
         if (row != null) {
-            for (String col : row.keySet()) {
-                JSONObject cObj = row.getJSONObject(col);
-                EventColumn c = new EventColumn();
-                c.setT(cObj.getIntValue("t"));
-                c.setH(cObj.getBooleanValue("h"));
-                c.setV(cObj.get("v"));
-                c.setName(col);
-                cs.add(c);
+            for (String column : row.keySet()) {
+                JSONObject columnObject = row.getJSONObject(column);
+                EventColumn eventColumn = new EventColumn();
+                eventColumn.setT(columnObject.getIntValue("t"));
+                eventColumn.setH(columnObject.getBooleanValue("h"));
+                eventColumn.setV(columnObject.get("v"));
+                eventColumn.setN(column);
+                eventColumnList.add(eventColumn);
             }
         }
-        return cs;
+        return eventColumnList;
     }
 
 }

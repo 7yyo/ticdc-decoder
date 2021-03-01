@@ -12,36 +12,35 @@ import java.util.List;
  */
 public class EventValueRowChange extends EventValueBase {
 
-    // Event type, Update or delete
-    private String changeType;
-    private List<EventColumn> oldColumns;
-    private List<EventColumn> columns;
+    private String rcType;
+    private List<EventColumn> o_col;
+    private List<EventColumn> col;
 
     public EventValueRowChange(Message message) {
-        super(EventValueType.rowChange, message);
+        super(EventValueType.ROW_CHANGE, message);
     }
 
-    public String getChangeType() {
-        return changeType;
+    public String getRcType() {
+        return rcType;
     }
 
-    public void setChangeType(String changeType) {
-        this.changeType = changeType;
+    public void setRcType(String rcType) {
+        this.rcType = rcType;
     }
 
-    public List<EventColumn> getColumns() {
-        return columns;
+    public List<EventColumn> getO_col() {
+        return o_col;
     }
 
-    public void setColumns(List<EventColumn> columns) {
-        this.columns = columns;
+    public void setO_col(List<EventColumn> o_col) {
+        this.o_col = o_col;
     }
 
-    public List<EventColumn> getOldColumns() {
-        return oldColumns;
+    public List<EventColumn> getCol() {
+        return col;
     }
 
-    public void setOldColumns(List<EventColumn> oldColumns) {
-        this.oldColumns = oldColumns;
+    public void setCol(List<EventColumn> col) {
+        this.col = col;
     }
 }

@@ -24,7 +24,9 @@ public class Consumer {
             ConsumerRecords<byte[], byte[]> records = kafkaConsumer.poll(Long.MAX_VALUE);
             for (ConsumerRecord<byte[], byte[]> record : records) {
                 String json = DecodeUtil.DecodeJson(record.key(), record.value());
-                System.out.println(json);
+                if (!json.contains("RESOLVED")) {
+                    System.out.println(json);
+                }
             }
         }
     }

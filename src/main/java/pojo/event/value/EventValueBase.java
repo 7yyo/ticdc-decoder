@@ -10,7 +10,7 @@ public class EventValueBase {
 
     private EventValueType type;
 
-    public EventValueBase(EventValueType type, Message kafkaMessage) {
+    public EventValueBase(EventValueType type, Message message) {
         this.type = type;
     }
 

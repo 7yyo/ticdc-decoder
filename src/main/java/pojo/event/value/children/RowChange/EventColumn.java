@@ -6,18 +6,18 @@ package pojo.event.value.children.RowChange;
  */
 public class EventColumn {
 
-    private String name;
+    private String n;
     private int t;
     private int f;
     private boolean h;
     private Object v;
 
-    public String getName() {
-        return name;
+    public String getN() {
+        return n;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setN(String n) {
+        this.n = n;
     }
 
     public int getT() {

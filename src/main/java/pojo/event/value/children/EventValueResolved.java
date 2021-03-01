@@ -8,10 +8,10 @@ import pojo.event.value.EventValueBase;
  * The resolve event
  * See detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#ddl-type-code
  */
-public class EventValueResolve extends EventValueBase {
+public class EventValueResolved extends EventValueBase {
 
-    public EventValueResolve(Message message) {
-        super(EventValueType.resolved, message);
+    public EventValueResolved(Message message) {
+        super(EventValueType.RESOLVED, message);
     }
 
 }

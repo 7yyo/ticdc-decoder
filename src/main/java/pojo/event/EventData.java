@@ -8,27 +8,27 @@ import pojo.event.value.EventValueBase;
  */
 public class EventData {
 
-    private EventKey eventKey;
-    private EventValueBase eventValue;
+    private EventKey k;
+    private EventValueBase v;
 
-    public EventData(EventKey eventKey, EventValueBase ticdcEventValue) {
-        this.eventKey = eventKey;
-        this.eventValue = ticdcEventValue;
+    public EventData(EventKey k, EventValueBase v) {
+        this.k = k;
+        this.v = v;
     }
 
-    public EventKey getEventKey() {
-        return eventKey;
+    public EventKey getK() {
+        return k;
     }
 
-    public void setEventKey(EventKey eventKey) {
-        this.eventKey = eventKey;
+    public void setK(EventKey k) {
+        this.k = k;
     }
 
-    public EventValueBase getEventValue() {
-        return eventValue;
+    public EventValueBase getV() {
+        return v;
     }
 
-    public void setEventValue(EventValueBase eventValue) {
-        this.eventValue = eventValue;
+    public void setV(EventValueBase v) {
+        this.v = v;
     }
 }

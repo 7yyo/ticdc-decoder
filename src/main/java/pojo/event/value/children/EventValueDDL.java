@@ -14,7 +14,7 @@ public class EventValueDDL extends EventValueBase {
     private int t;
 
     public EventValueDDL(Message message) {
-        super(EventValueType.ddl, message);
+        super(EventValueType.DDL, message);
     }
 
     public String getQ() {
