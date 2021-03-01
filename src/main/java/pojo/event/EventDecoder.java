@@ -163,9 +163,9 @@ public class EventDecoder implements Iterator<EventData> {
      * @return TiCDC event value
      */
     public EventValueBase createEventValue(String json) {
-//        if (json == null || json.length() == 0) {
-//            return new EventValueResolve(message);
-//        }
+        if (json == null || json.length() == 0) {
+            return new EventValueResolve(message);
+        }
         JSONObject jsonObject = JSON.parseObject(json);
         // DDL event
         if (jsonObject.containsKey(DDL)) {
