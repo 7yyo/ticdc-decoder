@@ -6,10 +6,6 @@ import pojo.event.value.EventValueBase;
 
 import java.util.List;
 
-/**
- * The row change event
- * See detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#resolved-event
- */
 public class EventValueRowChange extends EventValueBase {
 
     private String rcType;
