@@ -30,9 +30,10 @@ public class EventDecoder implements Iterator<EventData> {
     private static final String COLUMN = "u";
     private static final String OLD_COLUMN = "p";
 
+    private final Message message;
+
     private DataInputStream keyStream;
     private DataInputStream valueStream;
-    private final Message message;
     private long nextkeyLength;
     private long nextValueLength;
     private boolean hasNext = true;
@@ -42,10 +43,11 @@ public class EventDecoder implements Iterator<EventData> {
     }
 
     public EventDecoder(Message message) {
+
         this.message = message;
+
         if (message.getKey() != null) {
             keyStream = new DataInputStream(new ByteArrayInputStream(message.getKey()));
-            // Get protocol version
             readProtocolVersion();
             readNextKeyLength();
         }
@@ -53,6 +55,7 @@ public class EventDecoder implements Iterator<EventData> {
             valueStream = new DataInputStream(new ByteArrayInputStream(message.getValue()));
             readNextValueLength();
         }
+
     }
 
     @Override
@@ -63,6 +66,7 @@ public class EventDecoder implements Iterator<EventData> {
     @Override
     public EventData next() {
         try {
+
             EventKey eventKey = null;
             if (keyStream != null) {
                 // Reassignment is just to eliminate ambiguity.
@@ -73,6 +77,7 @@ public class EventDecoder implements Iterator<EventData> {
                 String keyData = new String(keys, StandardCharsets.UTF_8);
                 eventKey = createEventKey(keyData);
             }
+
             String valueData;
             if (valueStream != null) {
                 long valueLength = nextValueLength;
@@ -95,10 +100,6 @@ public class EventDecoder implements Iterator<EventData> {
         //TODO Just to implement the interface
     }
 
-    /**
-     * Call readLong() to get the length of the next key.
-     * If it can't be read, hasNext = false.
-     */
     private void readNextKeyLength() {
         try {
             nextkeyLength = keyStream.readLong();
@@ -110,10 +111,6 @@ public class EventDecoder implements Iterator<EventData> {
         }
     }
 
-    /**
-     * Call readLong() to get the length of the next value.
-     * If it can't be read, hasNext = false.
-     */
     private void readNextValueLength() {
         try {
             nextValueLength = valueStream.readLong();
@@ -124,12 +121,7 @@ public class EventDecoder implements Iterator<EventData> {
         }
     }
 
-    /**
-     * Protocol version should be 1.
-     * see detail https://docs.pingcap.com/tidb/stable/ticdc-open-protocol#message-format
-     */
     private void readProtocolVersion() {
-        // Protocol version
         long version;
         try {
             version = keyStream.readLong();
@@ -141,12 +133,6 @@ public class EventDecoder implements Iterator<EventData> {
         }
     }
 
-    /**
-     * Parse json to event key
-     *
-     * @param json Json from key byte[]
-     * @return Event key
-     */
     public EventKey createEventKey(String json) {
         JSONObject jsonObject = JSON.parseObject(json);
         EventKey key = new EventKey();
@@ -157,28 +143,25 @@ public class EventDecoder implements Iterator<EventData> {
         return key;
     }
 
-    /**
-     * Parse json to TiCDC event value
-     *
-     * @param json Json from value byte[]
-     * @return TiCDC event value
-     */
     public EventValueBase createEventValue(String json) {
+
         if (json == null || json.length() == 0) {
             return new EventValueResolved(message);
         }
+
         JSONObject jsonObject = JSON.parseObject(json);
-        // DDL event
+
         if (jsonObject.containsKey(DDL)) {
             EventValueDDL ddlEvent = new EventValueDDL(message);
             ddlEvent.setQ(jsonObject.getString("q"));
             ddlEvent.setT(jsonObject.getIntValue("t"));
             return ddlEvent;
         }
-        // Row change event type : update or delete
+
         String rowChangeType;
-        JSONObject row = null;
+        JSONObject row;
         EventValueRowChange eventValueRowChange = new EventValueRowChange(message);
+
         if (jsonObject.containsKey(COLUMN)) {
             rowChangeType = COLUMN;
             row = jsonObject.getJSONObject(OLD_COLUMN);
@@ -190,16 +173,20 @@ public class EventDecoder implements Iterator<EventData> {
         } else {
             throw new RuntimeException("The value message is not 'update' or 'delete', json = [" + json + "]");
         }
+
         row = jsonObject.getJSONObject(rowChangeType);
         eventValueRowChange.setRcType(rowChangeType);
+
         if (eventValueRowChange.getType() == EventValueType.ROW_CHANGE) {
             List<EventColumn> columns = getEventColumns(row);
             eventValueRowChange.setCol(columns);
         }
+
         return eventValueRowChange;
     }
 
     private List<EventColumn> getEventColumns(JSONObject row) {
+
         List<EventColumn> eventColumnList = new ArrayList<>();
         if (row != null) {
             for (String column : row.keySet()) {
@@ -212,6 +199,7 @@ public class EventDecoder implements Iterator<EventData> {
                 eventColumnList.add(eventColumn);
             }
         }
+
         return eventColumnList;
     }
 
