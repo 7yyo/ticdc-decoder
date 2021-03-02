@@ -1,9 +1,10 @@
-package pojo.event;
+package pojo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import enums.EventValueType;
 import pojo.Message;
+import pojo.event.EventData;
 import pojo.event.key.EventKey;
 import pojo.event.value.EventValueBase;
 import pojo.event.value.children.EventValueDDL;
